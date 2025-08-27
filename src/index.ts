@@ -30,15 +30,15 @@ app.get('/api/images', async (req, res) => {
 
     try {
         await fs.access(newPath);
+    // eslint-disable-next-line
     } catch (err) {
         try {
             await sharp(`assets/full/${filename}`).resize(width, height).toFile(newPath);
-            res.sendFile(path.join(`${__dirname}/..`, newPath));
+        // eslint-disable-next-line
         } catch (err) {
             res.status(404).send(`Error: ${filename} doesn't exist`);
-            return err;
+            return;
         }
-        return err;
     }
 
     res.sendFile(path.join(`${__dirname}/..`, newPath));
