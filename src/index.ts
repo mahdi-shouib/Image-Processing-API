@@ -33,10 +33,12 @@ app.get('/api/images', async (req, res) => {
     } catch (err) {
         try {
             await sharp(`assets/full/${filename}`).resize(width, height).toFile(newPath);
+            res.sendFile(path.join(`${__dirname}/..`, newPath));
         } catch (err) {
             res.status(404).send(`Error: ${filename} doesn't exist`);
-            return;
+            return err;
         }
+        return err;
     }
 
     res.sendFile(path.join(`${__dirname}/..`, newPath));
@@ -45,3 +47,5 @@ app.get('/api/images', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server started at http://localhost:${port}`)
 })
+
+export = app;
