@@ -1,6 +1,7 @@
 import express from 'express';
 import sharp from 'sharp';
 import path from 'path';
+import fs from 'fs/promises';
 
 const app = express();
 const port = 3000;
@@ -28,10 +29,14 @@ app.get('/api/images', async (req, res) => {
     const newPath = `assets/thumb/${width}w_${height}h_${filename}`;
 
     try {
-        await sharp(`assets/full/${filename}`).resize(width, height).toFile(newPath);
-    } catch(err) {
-        res.status(404).send(`Error: ${filename} doesn't exist`);
-        return;
+        await fs.access(newPath);
+    } catch (err) {
+        try {
+            await sharp(`assets/full/${filename}`).resize(width, height).toFile(newPath);
+        } catch (err) {
+            res.status(404).send(`Error: ${filename} doesn't exist`);
+            return;
+        }
     }
 
     res.sendFile(path.join(`${__dirname}/..`, newPath));
