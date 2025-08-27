@@ -1,0 +1,20 @@
+{
+  "name": "image-processing-api",
+  "version": "1.0.0",
+  "description": "Simple api to resize images",
+  "homepage": "https://github.com/mahdi-shouib/Image-Processing-API#readme",
+  "bugs": {
+    "url": "https://github.com/mahdi-shouib/Image-Processing-API/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahdi-shouib/Image-Processing-API.git"
+  },
+  "license": "ISC",
+  "author": "Mahdi Shouib",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
