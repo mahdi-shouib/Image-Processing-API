@@ -1,7 +1,6 @@
 import express from 'express';
-import sharp from 'sharp';
 import path from 'path';
-import fs from 'fs/promises';
+import imgProcess from './util/imageProcess';
 
 const app = express();
 const port = 3000;
@@ -21,26 +20,21 @@ app.get('/api/images', async (req, res) => {
     const width = parseInt(req.query.width!.toString());
     const height = parseInt(req.query.height!.toString());
 
-    if (width <= 0 || height <= 0) {
+    if (width <= 0 || height <= 0 || Number.isNaN(width) || Number.isNaN(height)) {
         res.status(400).send('Error: invalid width or height parameters');
         return;
     }
 
-    const newPath = `assets/thumb/${width}w_${height}h_${filename}`;
-
-    try {
-        await fs.access(newPath);
-    // eslint-disable-next-line
-    } catch (err) {
+    if (!imgProcess.IsImageCached(filename, width, height)) {
         try {
-            await sharp(`assets/full/${filename}`).resize(width, height).toFile(newPath);
-        // eslint-disable-next-line
-        } catch (err) {
-            res.status(404).send(`Error: ${filename} doesn't exist`);
+            await imgProcess.ResizeImage(filename, width, height)
+        } catch(err) {
+            res.status(404).send((err as object).toString());
             return;
         }
     }
 
+    const newPath = `assets/thumb/${width}w_${height}h_${filename}`;
     res.sendFile(path.join(`${__dirname}/..`, newPath));
 });
 
