@@ -11,13 +11,15 @@ const IsImageCached = (filename: string, width: number, height: number): boolean
 	return fs.existsSync(imgPath);
 }
 
-const ResizeImage = (filename: string, width: number, height: number): void => {
+const ResizeImage = async (filename: string, width: number, height: number): Promise<void> => {
 
-    if(!CheckFullImage(filename) || width <= 0 || height <= 0) return;
+    if(!CheckFullImage(filename)) throw Error(`${filename} doesn't exist`);
+
+    if(width <= 0 || height <= 0) throw Error('Invalid width or height parameters');
 
 	const imgPath = `assets/full/${filename}`;
 	const newPath = `assets/thumb/${width}w_${height}h_${filename}`;
-	sharp(imgPath).resize(width, height).toFile(newPath);
+	await sharp(imgPath).resize(width, height).toFile(newPath);
 }
 
 export = {
