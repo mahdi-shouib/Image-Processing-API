@@ -6,6 +6,11 @@ const CheckFullImage = (filename: string): boolean => {
 	return fs.existsSync(imgPath);
 };
 
+const IsImageCached = (filename: string, width: number, height: number): boolean => {
+    const imgPath = `assets/thumb/${width}w_${height}h_${filename}`;
+	return fs.existsSync(imgPath);
+}
+
 const ResizeImage = (filename: string, width: number, height: number): Promise<sharp.OutputInfo> | undefined => {
 
     if(!CheckFullImage(filename) || width <= 0 || height <= 0) return;
@@ -17,5 +22,6 @@ const ResizeImage = (filename: string, width: number, height: number): Promise<s
 
 export = {
 	CheckFullImage,
-    ResizeImage
+    ResizeImage,
+    IsImageCached
 };
