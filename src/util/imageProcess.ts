@@ -25,10 +25,10 @@ const IsImageCached = async (filename: string, width: number, height: number): P
 
 const DeleteCachedImage = async (filename: string): Promise<void> => {
 	const files = await fs.readdir('./assets/thumb');
-	files.filter(f => f.endsWith(filename))
-	.forEach(async img => {
-		await fs.unlink(`./assets/thumb/${img}`);
-	})
+
+	await Promise.all(
+		files.filter(f => f.endsWith(filename)).map(img => fs.unlink(`./assets/thumb/${img}`))
+	);
 }
 
 const ResizeImage = async (filename: string, width: number, height: number): Promise<void> => {
