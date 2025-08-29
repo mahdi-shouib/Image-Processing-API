@@ -11,6 +11,19 @@ const IsImageCached = (filename: string, width: number, height: number): boolean
 	return fs.existsSync(imgPath);
 }
 
+const DeleteCachedImage = (filename: string): void => {
+	fs.readdir('./assets/thumb', (err, files) => {
+		if (err) throw Error();
+
+		files.filter(f => f.endsWith(filename))
+		.forEach(img => {
+			fs.unlink(`./assets/thumb/${img}`, (err) => {
+				if(err) throw err;
+			})
+		})
+	})
+}
+
 const ResizeImage = async (filename: string, width: number, height: number): Promise<void> => {
 
     if(!CheckFullImage(filename)) throw Error(`${filename} doesn't exist`);
@@ -23,5 +36,6 @@ const ResizeImage = async (filename: string, width: number, height: number): Pro
 export = {
 	CheckFullImage,
     ResizeImage,
-    IsImageCached
+    IsImageCached,
+	DeleteCachedImage
 };
