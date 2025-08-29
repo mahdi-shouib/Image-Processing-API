@@ -15,8 +15,6 @@ const ResizeImage = async (filename: string, width: number, height: number): Pro
 
     if(!CheckFullImage(filename)) throw Error(`${filename} doesn't exist`);
 
-    if(width <= 0 || height <= 0) throw Error('Invalid width or height parameters');
-
 	const imgPath = `assets/full/${filename}`;
 	const newPath = `assets/thumb/${width}w_${height}h_${filename}`;
 	await sharp(imgPath).resize(width, height).toFile(newPath);
