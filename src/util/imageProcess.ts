@@ -1,26 +1,33 @@
-import fs from 'fs';
+import fs from 'fs/promises';
 import sharp from 'sharp';
 
-const CheckFullImage = (filename: string): boolean => {
+const CheckFullImage = async (filename: string): Promise<boolean> => {
 	const imgPath = `assets/full/${filename}`;
-	return fs.existsSync(imgPath);
+	try {
+		await fs.access(imgPath);
+		return true;
+	// eslint-disable-next-line
+	} catch (err) {
+		return false;
+	}
 };
 
-const IsImageCached = (filename: string, width: number, height: number): boolean => {
+const IsImageCached = async (filename: string, width: number, height: number): Promise<boolean> => {
     const imgPath = `assets/thumb/${width}w_${height}h_${filename}`;
-	return fs.existsSync(imgPath);
+	try {
+		await fs.access(imgPath);
+		return true;
+	// eslint-disable-next-line
+	} catch (err) {
+		return false;
+	}
 }
 
-const DeleteCachedImage = (filename: string): void => {
-	fs.readdir('./assets/thumb', (err, files) => {
-		if (err) throw Error();
-
-		files.filter(f => f.endsWith(filename))
-		.forEach(img => {
-			fs.unlink(`./assets/thumb/${img}`, (err) => {
-				if(err) throw err;
-			})
-		})
+const DeleteCachedImage = async (filename: string): Promise<void> => {
+	const files = await fs.readdir('./assets/thumb');
+	files.filter(f => f.endsWith(filename))
+	.forEach(async img => {
+		await fs.unlink(`./assets/thumb/${img}`);
 	})
 }
 
