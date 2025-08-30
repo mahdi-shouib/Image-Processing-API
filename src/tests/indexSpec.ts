@@ -41,5 +41,11 @@ describe('Testing endpoints', () => {
             expect(response.badRequest).toBe(true);
             expect(response.text).toEqual('Error: invalid width or height parameters');
         })
+
+        it('images endpoint with non existant image is not found request', async () => {
+            const response = await request.get('/api/images?filename=notreal.file&width=500&height=500');
+            expect(response.notFound).toBe(true);
+            expect(response.text).toEqual(`Error: notreal.file doesn't exist`);
+        })
     })
 })
