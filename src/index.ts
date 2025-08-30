@@ -26,7 +26,6 @@ app.get('/api/images', async (req, res) => {
     }
 
     if (!await imgProcess.IsImageCached(filename, width, height)) {
-        console.log('NOT CACHED')
         try {
             await imgProcess.ResizeImage(filename, width, height)
         } catch(err) {
