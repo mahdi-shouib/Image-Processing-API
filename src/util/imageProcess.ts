@@ -33,7 +33,7 @@ const DeleteCachedImage = async (filename: string): Promise<void> => {
 
 const ResizeImage = async (filename: string, width: number, height: number): Promise<void> => {
 
-    if(!CheckFullImage(filename)) throw Error(`${filename} doesn't exist`);
+    if(!await CheckFullImage(filename)) throw Error(`${filename} doesn't exist`);
 
 	const imgPath = `assets/full/${filename}`;
 	const newPath = `assets/thumb/${width}w_${height}h_${filename}`;
