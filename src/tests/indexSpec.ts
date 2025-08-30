@@ -29,5 +29,17 @@ describe('Testing endpoints', () => {
             expect(response.badRequest).toBe(true);
             expect(response.text).toEqual('Error: missing width or height parameters');
         })
+
+        it('images endpoint with text width is invalid width or height bad request', async () => {
+            const response = await request.get('/api/images?filename=img.jpg&width=fivehundred&height=500');
+            expect(response.badRequest).toBe(true);
+            expect(response.text).toEqual('Error: invalid width or height parameters');
+        })
+
+        it('images endpoint with text height is invalid width or height bad request', async () => {
+            const response = await request.get('/api/images?filename=img.jpg&width=500&height=fivehundred');
+            expect(response.badRequest).toBe(true);
+            expect(response.text).toEqual('Error: invalid width or height parameters');
+        })
     })
 })
